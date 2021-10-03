@@ -1,0 +1,13 @@
+#!/bin/bash
+
+pm2 stop bot
+git reset --hard
+git pull
+CONFLICTS=$(git ls-files -u | wc -l)
+if [ "$CONFLICTS" -gt 0 ] ; then
+  echo "There is a merge conflict. Doing a reset first..."
+  git reset --hard
+  git pull
+  exit 1
+fi
+pm2 start bot
